@@ -12,7 +12,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Expone el puerto en el que corre la aplicación (5000 para Flask, 8000 para Django, por ejemplo)
-EXPOSE 5000
+EXPOSE 8080
 
 # Define el comando para ejecutar la aplicación
 CMD ["python", "app.py"]
