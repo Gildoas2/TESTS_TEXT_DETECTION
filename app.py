@@ -6,7 +6,7 @@ from PIL import Image
 from io import BytesIO
 app = Flask(__name__)
 @app.route('/extraer_cuadrados', methods=['POST'])
-def extraer_cuadrados(request):
+def extraer_cuadrados():
 
     # Verificar si se envió una imagen
     if 'image' not in request.files:
@@ -71,3 +71,5 @@ def extraer_cuadrados(request):
     # Retornar la imagen recortada
     mimetype_respuesta = "image/jpeg" if formato_salida == "JPEG" else "image/png"
     return send_file(img_io, mimetype=mimetype_respuesta)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
