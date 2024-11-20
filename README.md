@@ -2,28 +2,31 @@
 
 
 ##Descripción**
-Este endpoint recibe una imagen junto con un conjunto de pares de puntos. Se devolverá la zona seleccionada y los cuadrados delimitados por los pares de puntos (Siendo estos el superior-izquierdo y el inferior-derecho).
+Este endpoint recibe un formdata que admite una imagen junto con un conjunto de pares de puntos que representaran las caja de donde se quiere extraer el texto. Devuelve en multipart formdata la seleccion de cada caja más la sección completa de donde se ha extraido todo. Es decir, si se han seleccionado 
 
-##Estructura de la solicitud
-La solicitud debe ser un objeto JSON que contenga los siguientes campos:
-+ `image` (requerido, tipo:`string`)
-    + Una cadena en Base64 que representa la imagen en jpg o png
-+ `points` (requerido, tipo:`array`)
-    + Una lista de objetos, cada uno contiene un par de puntos con coordenadas.
-    + Cada objeto dentro del array debe tener:
-        +`x1` (requerido, tipo: `number`): Coordenada X del primer punto.
-        +`y1` (requerido, tipo: `number`): Coordenada Y del primer punto.
-        +`x2` (requerido, tipo: `number`): Coordenada X del segundo punto.
-        +`y2` (requerido, tipo: `number`): Coordenada Y del segundo punto.
 
 ##Ejemplo de solicitud
 '''
-{
-  "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...",
-  "points": [
-    {"x1": 100, "y1": 150, "x2": 200, "y2": 250},
-    {"x1": 300, "y1": 350, "x2": 400, "y2": 450},
-    {"x1": 50, "y1": 75, "x2": 125, "y2": 175}
-  ]
-}
+curl --location 'url' \
+--form 'image=@"ruta_del_archivo"' \
+--form 'points="[
+    {\"x1\": 100, \"y1\": 200, \"x2\": 200, \"y2\": 800},
+    {\"x1\": 500, \"y1\": 500, \"x2\": 550, \"y2\": 1000}
+]"'
+'''
+##Ejemplo de respuesta
+ '''
+--3e1c6f192546404394bb11ae05f9c828
+Content-Disposition: form-data; name="mask_0"; filename="mask_0.png"# Correspondiente mascara a la primera caja.
+Content-Type: image/jpeg
+(archivo en binario)
+--3e1c6f192546404394bb11ae05f9c828
+Content-Disposition: form-data; name="mask_1"; filename="mask_1.png"# Correspondiente mascara de la segunda caja.
+Content-Type: image/jpeg
+(archivo en binario)
+--3e1c6f192546404394bb11ae05f9c828
+Content-Disposition: form-data; name="cuadrado_grande"; filename="cuadrado_grande.jpg"#Recorte del cuadrado más pequeño que contiene ambas cajas.
+Content-Type: image/jpeg
+(archivo en binario)
+--3e1c6f192546404394bb11ae05f9c828--
 '''
