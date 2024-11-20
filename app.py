@@ -1,5 +1,10 @@
 import os
 import numpy as np
+import cv2
+import torch
+import base64
+from sam2.build_sam import build_sam2
+from sam2.sam2_image_predictor import SAM2ImagePredictor
 from flask import Flask, request, jsonify, send_file
 import json
 from PIL import Image
@@ -7,7 +12,10 @@ from io import BytesIO
 app = Flask(__name__)
 @app.route('/extraer_cuadrados', methods=['POST'])
 def extraer_cuadrados():
-
+    
+    '''
+    Preparación de los datos enviados por el usuario
+    '''
     # Verificar si se envió una imagen
     if 'image' not in request.files:
         return jsonify({"status": "error", "message": "La imagen es requerida"}), 400
@@ -42,7 +50,13 @@ def extraer_cuadrados():
         ])
     except KeyError:
         return jsonify({"status": "error", "message": "Formato de puntos incorrecto"}), 400
-    #Calculamos el cuadrado grande
+   
+    '''
+    Preparamos el modelo
+    '''
+    '''
+    Calculamos el cuadrado grande
+    '''
     min_col1 = np.min(boxes[:, 0])  # Mínimo de la primera columna
     min_col2 = np.min(boxes[:, 1])  # Mínimo de la segunda columna
     max_col3 = np.max(boxes[:, 2])  # Máximo de la tercera columna
