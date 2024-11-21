@@ -1,1 +1,7 @@
-flask==2.3.2
+
+Flask==2.3.0
+Pillow==9.5.0
+numpy==1.23.5
+matplotlib==3.7.1
+supervision==0.3.2
+requests_toolbelt==1.0.0
